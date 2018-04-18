@@ -66,6 +66,11 @@ spec:
         - name: storage
           mountPath: /data
       volumes:
-        - emptyDir:
+        - name: storage
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "fullname" . }}
+        {{- else }}
+          emptyDir:
             medium: ""
-          name: "storage"
+        {{- end -}}
